@@ -81,4 +81,15 @@ designElement.addEventListener('change', (e) => {
       shirtColors[k].hidden = false;
     }  
   }
-})
+});
+
+// SELECTING A WORKSHOP
+
+/* vairable storing data-day-and-time 
+loop over checkboxes
+variable storing each checkbox
+disable/enable if in same list selection AND
+don't disable if just clicked
+if clicked checkbox is checked 
+disable checkboxes iterated over
+*/
