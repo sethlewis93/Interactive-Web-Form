@@ -2,8 +2,16 @@ document.querySelector("#name").focus();
 
 const jobTitleLabel = document.getElementsByTagName("label")[2];
 const jobTitleInput = document.querySelector("#other-title");
-const designElement = document.querySelector('#design');
+const designElement = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
+const checkboxes = document.querySelector(".activities input");
+
+// Helpful function for creating elements
+const createElement = (elementName, property, value) => {
+  const element = document.createElement(elementName);
+  element[property] = value;
+  return element;
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   // Hide the "other" job title option
@@ -11,11 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   jobTitleInput.style.display = "none";
 
   // Create the 'select a T-shirt' node & message
-  const createElement = (elementName, property, value) => {
-    const element = document.createElement(elementName);
-    element[property] = value;
-    return element;
-  };
   const selectShirt = createElement(
     "option",
     "innerHTML",
@@ -55,31 +58,31 @@ titleElement.addEventListener("click", (e) => {
 });
 
 // SELECTING T-SHIRT //
-designElement.addEventListener('change', (e) => {
+designElement.addEventListener("change", (e) => {
   const shirtColors = colorSelection.children;
   const themeChoices = e.target;
-  if (themeChoices.value == 'heart js') {
+  if (themeChoices.value == "heart js") {
     for (let i = 0; i < shirtColors.length; i++) {
-      if (shirtColors[i].text.includes('(JS Puns')) {
+      if (shirtColors[i].text.includes("(JS Puns")) {
         shirtColors[i].hidden = true;
       } else {
         shirtColors[i].hidden = false;
       }
-    }  
+    }
   }
-  if (themeChoices.value == 'js puns') {
+  if (themeChoices.value == "js puns") {
     for (let j = 0; j < shirtColors.length; j++) {
-      if (shirtColors[j].text.includes('♥')) {
+      if (shirtColors[j].text.includes("♥")) {
         shirtColors[j].hidden = true;
       } else {
         shirtColors[j].hidden = false;
       }
-    }  
+    }
   }
-  if (themeChoices.value == 'Select Theme') {
+  if (themeChoices.value == "Select Theme") {
     for (let k = 0; k < shirtColors.length; k++) {
       shirtColors[k].hidden = false;
-    }  
+    }
   }
 });
 
@@ -93,3 +96,19 @@ don't disable if just clicked
 if clicked checkbox is checked 
 disable checkboxes iterated over
 */
+
+// Access checkboxes, create & apend new total cost element
+let activityCost = createElement("p", "textContent", "Total Cost:");
+checkboxes.appendChild(activityCost);
+
+let totalCost = 0;
+
+document.querySelector(".activities").addEventListener("change", (e) => {
+  const clicked = e.target;
+  activityCost = parseInt(clicked.getAttribute("data-cost"));
+  if (clicked.checked) {
+    totalCost = activityCost + totalCost;
+  } else {
+    totalCost = totalCost - activityCost;
+  }
+});
