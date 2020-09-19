@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   for (let i = 0; i < checkboxes.length; i++)
     if (checkboxes[i].checked) {
       checkboxes[i].checked = false;
-  }
+    }
 });
 
 //SELECTING JOB TITLE //
@@ -92,28 +92,20 @@ designElement.addEventListener("change", (e) => {
   }
 });
 
-// SELECTING A WORKSHOP
+// SELECTING A WORKSHOP //
 
-/* vairable storing data-day-and-time 
-loop over checkboxes
-variable storing each checkbox
-disable/enable if in same list selection AND
-don't disable if just clicked
-if clicked checkbox is checked 
-disable checkboxes iterated over
-*/
-
-// Access checkboxes, create & apend new total cost element
+// Create & apend new total cost element
 const activities = document.querySelector(".activities");
-// Checkboxes accessed at top of document
 let currentCost = 0;
 let totalCost = createElement("h4", "textContent", "");
 activities.appendChild(totalCost);
 
 activities.addEventListener("change", (e) => {
-
+  // Store cost data from clicked element
   const clicked = e.target;
   let addCost = parseInt(clicked.getAttribute("data-cost"));
+
+  // If input element is chcked, add the cost of currently clicked activity or else subtract the cost from total
   if (clicked.checked) {
     currentCost += addCost;
     console.log(currentCost);
@@ -123,6 +115,22 @@ activities.addEventListener("change", (e) => {
   }
   totalCost.textContent = `Total Cost: $${currentCost}`;
 
-  
-
+  // Diable conflicting activities
+  const eventDayTime = clicked.getAttribute("data-day-and-time");
+  // Checkboxes accessed at top of document
+  // Search all checkbox inputs
+  for (let i = 0; i < checkboxes.length; i++) {
+    // Store day/time info from checked box
+    const boxType = checkboxes[i].getAttribute("data-day-and-time");
+    /* If activity IN THE LOOP occurs same day as activity CLICKED && 
+    if PREVIOUSLY CLICKED activity is different than those IN LOOP*/
+    if (boxType === eventDayTime && clicked !== checkboxes[i]) {
+      // Check if CLICKED activity was checked. If so - disable MATCHING activity
+      if (clicked.checked) {
+        checkboxes[i].disabled = true;
+      } else {
+        checkboxes[i].disabled = false;
+      }
+    }
+  }
 });
