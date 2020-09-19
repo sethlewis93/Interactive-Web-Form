@@ -4,7 +4,6 @@ const jobTitleLabel = document.getElementsByTagName("label")[2];
 const jobTitleInput = document.querySelector("#other-title");
 const designElement = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
-const checkboxes = document.querySelector(".activities input");
 
 // Helpful function for creating elements
 const createElement = (elementName, property, value) => {
@@ -98,17 +97,21 @@ disable checkboxes iterated over
 */
 
 // Access checkboxes, create & apend new total cost element
-let activityCost = createElement("p", "textContent", "Total Cost:");
-checkboxes.appendChild(activityCost);
+const activities = document.querySelector(".activities");
+const checkboxes = document.querySelectorAll(".activities input");
+let currentCost = 0;
+let totalCost = createElement("h4", "textContent", "");
+activities.appendChild(totalCost);
 
-let totalCost = 0;
-
-document.querySelector(".activities").addEventListener("change", (e) => {
+activities.addEventListener("change", (e) => {
   const clicked = e.target;
-  activityCost = parseInt(clicked.getAttribute("data-cost"));
+  let addCost = parseInt(clicked.getAttribute("data-cost"));
   if (clicked.checked) {
-    totalCost = activityCost + totalCost;
+    currentCost += addCost;
+    console.log(currentCost);
   } else {
-    totalCost = totalCost - activityCost;
+    currentCost -= addCost;
+    console.log(currentCost);
   }
+  totalCost.textContent = `Total Cost: $${currentCost}`;
 });
