@@ -4,6 +4,7 @@ const jobTitleLabel = document.getElementsByTagName("label")[2];
 const jobTitleInput = document.querySelector("#other-title");
 const designElement = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
+const checkboxes = document.querySelectorAll(".activities input");
 
 // Helpful function for creating elements
 const createElement = (elementName, property, value) => {
@@ -32,6 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Set "selected" option to automatically load the 'Select Theme' message
   designElement.firstElementChild.selected = true;
+
+  // If there are any boxes checked when page reloads, remove checks
+  for (let i = 0; i < checkboxes.length; i++)
+    if (checkboxes[i].checked) {
+      checkboxes[i].checked = false;
+  }
 });
 
 //SELECTING JOB TITLE //
@@ -98,12 +105,13 @@ disable checkboxes iterated over
 
 // Access checkboxes, create & apend new total cost element
 const activities = document.querySelector(".activities");
-const checkboxes = document.querySelectorAll(".activities input");
+// Checkboxes accessed at top of document
 let currentCost = 0;
 let totalCost = createElement("h4", "textContent", "");
 activities.appendChild(totalCost);
 
 activities.addEventListener("change", (e) => {
+
   const clicked = e.target;
   let addCost = parseInt(clicked.getAttribute("data-cost"));
   if (clicked.checked) {
@@ -114,4 +122,7 @@ activities.addEventListener("change", (e) => {
     console.log(currentCost);
   }
   totalCost.textContent = `Total Cost: $${currentCost}`;
+
+  
+
 });
