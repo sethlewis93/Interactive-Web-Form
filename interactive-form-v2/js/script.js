@@ -5,6 +5,7 @@ const jobTitleInput = document.querySelector("#other-title");
 const designElement = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
 const checkboxes = document.querySelectorAll(".activities input");
+const payment = document.querySelector("#payment");
 
 // Helpful function for creating elements
 const createElement = (elementName, property, value) => {
@@ -31,20 +32,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const firstColor = colorSelection.firstElementChild;
   colorSelection.insertBefore(selectShirt, firstColor);
 
-  // Set "selected" option to automatically load the 'Select Theme' message
+  // Set 'Select Theme' as default shirt design choice
   designElement.firstElementChild.selected = true;
 
   // If there are any boxes checked when page reloads, remove checks
-  for (let i = 0; i < checkboxes.length; i++)
+  for (let i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
       checkboxes[i].checked = false;
     }
+  }
+
+  // Set 'Credit Card' as default payment option & REMOVE 'Select Payment' message
+  payment.children[1].selected = true;
+  let paymentMessage = payment.children[0];
+  payment.removeChild(paymentMessage);
 });
 
 //SELECTING JOB TITLE //
 
 // When user selects 'other' job title - show the input & label
-// See if you can consolodate the globals better
 const titleElement = document.querySelector("#title");
 const otherJobTitle = titleElement.lastElementChild;
 
@@ -85,6 +91,7 @@ designElement.addEventListener("change", (e) => {
       }
     }
   }
+  // If user chooses 'Select Theme' after selecting theme previously, refresh the choices
   if (themeChoices.value == "Select Theme") {
     for (let k = 0; k < shirtColors.length; k++) {
       shirtColors[k].hidden = false;
@@ -132,5 +139,34 @@ activities.addEventListener("change", (e) => {
         checkboxes[i].disabled = false;
       }
     }
+  }
+});
+
+// PAYMENT SECTION //
+payment.addEventListener("change", (e) => {
+  const clicked = e.target.value;
+  // Showing/hiding payment forms based on user selection
+  const creditCard = payment.children[0];
+  const creditCardForm = document.querySelector("#credit-card");
+  if (clicked === creditCard.value) {
+    creditCardForm.style.display = "block";
+  } else {
+    creditCardForm.style.display = "none";
+  }
+
+  const payPal = payment.children[1];
+  const payPalForm = document.querySelector("#paypal");
+  if (clicked === payPal.value) {
+    payPalForm.style.display = "block";
+  } else {
+    payPalForm.style.display = "none";
+  }
+
+  const bitcoin = payment.children[2];
+  const bitcoinForm = document.querySelector("#bitcoin");
+  if (clicked === bitcoin.value) {
+    bitcoinForm.style.display = "block";
+  } else {
+    bitcoinForm.style.display = "none";
   }
 });
