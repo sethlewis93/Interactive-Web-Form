@@ -2,6 +2,7 @@ document.querySelector("#name").focus();
 
 const form = document.querySelector("form");
 const name = document.querySelector("#name");
+const email = document.querySelector('#mail');
 const jobTitleLabel = document.getElementsByTagName("label")[2];
 const jobTitleInput = document.querySelector("#other-title");
 const designElement = document.querySelector("#design");
@@ -186,9 +187,28 @@ const nameValidator = () => {
   }
 };
 
-name.addEventListener("input", nameValidator);
+const emailValidator = () => {
+  const usersEmail = email.value;
+  console.log(usersEmail);
+  const commercialAt = usersEmail.indexOf('@')
+  const dot = usersEmail.indexOf('.');
+
+  if (commercialAt > 1 && dot - 1 > commercialAt + 1) {
+    email.style.borderColor = 'white';
+    return true;
+  } else {
+    email.style.borderColor = 'red';
+    return false;
+  }
+};
+
 
 form.addEventListener("submit", (e) => {
-  e.preventDefault();
+  if (!nameValidator()) {
+    e.preventDefault();
+  }
+  if (!emailValidator()) {
+    e.preventDefault();
+  }
   console.log("submit handler works");
 });
