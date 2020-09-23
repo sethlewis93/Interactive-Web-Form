@@ -230,29 +230,7 @@ form.addEventListener("submit", (e) => {
   const zip = document.querySelector("#zip");
   const cvv = document.querySelector("#cvv");
 
-  if (cardNum.value.length >= 13 && cardNum.value.length <= 16) {
-    cardNum.style.borderColor = "white";
-    return true;
-  } else {
-    cardNum.style.borderColor = "red";
-    e.preventDefault();
-  }
-
-  if (zip.value.length === 5) {
-    zip.style.borderColor = "white";
-    return true;
-  } else {
-    zip.style.borderColor = "red";
-    e.preventDefault();
-  }
-
-  if (cvv.value.length === 3) {
-    cvv.style.borderColor = "white";
-    return true;
-  } else {
-    cvv.style.borderColor = "red";
-    e.preventDefault();
-  }
+  
 
   console.log("submit handler works");
 });
