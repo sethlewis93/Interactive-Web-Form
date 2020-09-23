@@ -1,5 +1,7 @@
 document.querySelector("#name").focus();
 
+const form = document.querySelector("form");
+const name = document.querySelector("#name");
 const jobTitleLabel = document.getElementsByTagName("label")[2];
 const jobTitleInput = document.querySelector("#other-title");
 const designElement = document.querySelector("#design");
@@ -169,4 +171,24 @@ payment.addEventListener("change", (e) => {
   } else {
     bitcoinForm.style.display = "none";
   }
+});
+
+// FORM VALIDATION
+const nameValidator = () => {
+  const usersName = name.value;
+  console.log(usersName);
+  if (usersName.length > 0) {
+    name.style.borderColor = "white";
+    return true;
+  } else {
+    name.style.borderColor = "white";
+    return false;
+  }
+};
+
+name.addEventListener("input", nameValidator);
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  console.log("submit handler works");
 });
