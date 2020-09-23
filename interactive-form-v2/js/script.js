@@ -230,7 +230,19 @@ form.addEventListener("submit", (e) => {
   const zip = document.querySelector("#zip");
   const cvv = document.querySelector("#cvv");
 
-  
+  const creditCardValidator = () => {
+    const regex = /^\D*\d{13}\D*(\d{3})?\D*$/;
+    if (!regex.test(cardNum.value)) {
+      cardNum.style.borderColor = "red";
+      return false;
+    } else {
+      cardNum.style.borderColor = "red";
+      return true;
+    }
+  };
 
+  if (!creditCardValidator()) {
+    e.preventDefault();
+  }
   console.log("submit handler works");
 });
