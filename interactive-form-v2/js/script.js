@@ -189,7 +189,7 @@ const nameValidator = () => {
 
 const emailValidator = () => {
   const usersEmail = email.value;
-  console.log(usersEmail);
+  // create regex for email validation
   const commercialAt = usersEmail.indexOf("@");
   const dot = usersEmail.indexOf(".");
 
@@ -208,8 +208,38 @@ const activitiesValidator = () => {
       return true;
     }
   }
-  activities.style.backgroundColor = "red";
+  activities.style.borderStyle = "solid";
+  activities.style.borderColor = "red";
   return false;
+};
+
+// CREDIT CARD VALIDATION
+
+// Credit card selector & error message
+const cardNum = document.querySelector("#cc-num");
+const ccErrorMessage = (elementName, property, value) => {
+  const element = createElement(elementName, property, value);
+  const cardLabel = cardNum.parentNode;
+  cardLabel.insertBefore(element, cardNum);
+  return element;
+};
+
+// Zip code selector & error message
+const zip = document.querySelector("#zip");
+const zipErrorMessage = (elementName, property, value) => {
+  const element = createElement(elementName, property, value);
+  const zipLabel = zip.parentNode;
+  zipLabel.insertBefore(element, zip);
+  return element;
+};
+
+// Cvv selector & error message
+const cvv = document.querySelector("#cvv");
+const cvvErrorMessage = (elementName, property, value) => {
+  const element = createElement(elementName, property, value);
+  const cvvLabel = cvv.parentNode;
+  cvvLabel.insertBefore(element, cvv);
+  return element;
 };
 
 form.addEventListener("submit", (e) => {
@@ -225,24 +255,70 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
   }
 
-  // Credit card validation
-  const cardNum = document.querySelector("#cc-num");
-  const zip = document.querySelector("#zip");
-  const cvv = document.querySelector("#cvv");
-
+  // CC Validation
+  // ultimately want to put a listener on all 3 validators to update input in real time
   const creditCardValidator = () => {
+    // expression is off - not accepting strings of 14-15 numerals
     const regex = /^\D*\d{13}\D*(\d{3})?\D*$/;
     if (!regex.test(cardNum.value)) {
       cardNum.style.borderColor = "red";
       return false;
     } else {
-      cardNum.style.borderColor = "red";
+      cardNum.style.borderColor = "white";
+      return true;
+    }
+  };
+
+  const zipCodeValidator = () => {
+    const regex = /^\d{5}$/;
+    if (!regex.test(zip.value)) {
+      zip.style.borderColor = "red";
+      return false;
+    } else {
+      zip.style.borderColor = "white";
+      return true;
+    }
+  };
+
+  const cvvValidator = () => {
+    const regex = /^\d{3}$/;
+    if (!regex.test(cvv.value)) {
+      cvv.style.borderColor = "red";
+      return false;
+    } else {
+      cvv.style.borderColor = "white";
       return true;
     }
   };
 
   if (!creditCardValidator()) {
+    const showError = ccErrorMessage(
+      "span",
+      "textContent",
+      "ERROR: 13-16 digits required"
+    );
+    // how do I set this to display only once?
+    showError.style.display = "block";
     e.preventDefault();
   }
-  console.log("submit handler works");
+
+  if (!zipCodeValidator()) {
+    const showError = zipErrorMessage(
+      "span",
+      "textContent",
+      "ERROR: 5 digits required"
+    );
+    showError.style.display = "block";
+    e.preventDefault();
+  }
+
+  if (!cvvValidator()) {
+    const showError = cvvErrorMessage(
+      "span",
+      "textContent",
+      "ERROR: 3 digits required"
+    );
+    showError.style.display = "block";
+    e.preventDefault();
+  }
 });
