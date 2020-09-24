@@ -1,22 +1,33 @@
 document.querySelector("#name").focus();
 
 const form = document.querySelector("form");
+
+// Name and Email inputs
 const nameInput = document.querySelector("#name");
 const email = document.querySelector("#mail");
+
+// Job selectors: used for opening new 'Your Job Role' field
 const jobTitleLabel = document.getElementsByTagName("label")[2];
 const jobTitleInput = document.querySelector("#other-title");
+
+// T Shirt selection
 const designElement = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
+
+// Activities selector
 const checkboxes = document.querySelectorAll(".activities input");
+
+// Payment selector
 const payment = document.querySelector("#payment");
 
-// Helpful function for creating elements
+// Helpful function for creating elements as needed
 const createElement = (elementName, property, value) => {
   const element = document.createElement(elementName);
   element[property] = value;
   return element;
 };
 
+// Default settings when the document loads
 document.addEventListener("DOMContentLoaded", () => {
   // Hide the "other" job title option
   jobTitleLabel.style.display = "none";
@@ -54,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
 //SELECTING JOB TITLE //
 
 // When user selects 'other' job title - show the input & label
-const titleElement = document.querySelector("#title");
-const otherJobTitle = titleElement.lastElementChild;
+const jobTitles = document.querySelector("#title");
+const otherJobTitle = jobTitles.lastElementChild;
 
-titleElement.addEventListener("click", (e) => {
+jobTitles.addEventListener("click", (e) => {
   if (e.target === otherJobTitle) {
     jobTitleLabel.style.display = "block";
     jobTitleInput.style.display = "block";
@@ -118,10 +129,8 @@ activities.addEventListener("change", (e) => {
   // If input element is chcked, add the cost of currently clicked activity or else subtract the cost from total
   if (clicked.checked) {
     currentCost += addCost;
-    console.log(currentCost);
   } else {
     currentCost -= addCost;
-    console.log(currentCost);
   }
   totalCost.textContent = `Total Cost: $${currentCost}`;
 
@@ -148,7 +157,9 @@ activities.addEventListener("change", (e) => {
 // PAYMENT SECTION //
 payment.addEventListener("change", (e) => {
   const clicked = e.target.value;
-  // Showing/hiding payment forms based on user selection
+  /* Showing/hiding payment forms based on user selection
+      NOTE: 'Select Payment Method' already removed from payment options inside DOMCONTENTLOADED Event
+  */
   const creditCard = payment.children[0];
   const creditCardForm = document.querySelector("#credit-card");
   if (clicked === creditCard.value) {
@@ -189,7 +200,7 @@ const nameValidator = () => {
 
 const emailValidator = () => {
   const usersEmail = email.value;
-  // create regex for email validation
+  // need to write regex for email validation
   const commercialAt = usersEmail.indexOf("@");
   const dot = usersEmail.indexOf(".");
 
@@ -256,10 +267,8 @@ form.addEventListener("submit", (e) => {
   }
 
   // CC Validation
-  // ultimately want to put a listener on all 3 validators to update input in real time
   const creditCardValidator = () => {
-    // expression is off - not accepting strings of 14-15 numerals
-    const regex = /^\D*\d{13}\D*(\d{3})?\D*$/;
+    const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
     if (!regex.test(cardNum.value)) {
       cardNum.style.borderColor = "red";
       return false;
@@ -297,7 +306,7 @@ form.addEventListener("submit", (e) => {
       "textContent",
       "ERROR: 13-16 digits required"
     );
-    // how do I set this to display only once?
+    // how do I set these messages to display only once?
     showError.style.display = "block";
     e.preventDefault();
   }
