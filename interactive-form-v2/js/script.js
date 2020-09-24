@@ -266,7 +266,7 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
   }
 
-  // CC Validation
+  // CC Inputs
   const creditCardValidator = () => {
     const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
     if (!regex.test(cardNum.value)) {
