@@ -20,6 +20,9 @@ const checkboxes = document.querySelectorAll(".activities input");
 // Payment selector
 const payment = document.querySelector("#payment");
 
+// Credit card form selector
+const creditCardForm = document.querySelector("#credit-card");
+
 // Helpful function for creating elements as needed
 const createElement = (elementName, property, value) => {
   const element = document.createElement(elementName);
@@ -161,7 +164,6 @@ payment.addEventListener("change", (e) => {
       NOTE: 'Select Payment Method' already removed from payment options inside DOMCONTENTLOADED Event
   */
   const creditCard = payment.children[0];
-  const creditCardForm = document.querySelector("#credit-card");
   if (clicked === creditCard.value) {
     creditCardForm.style.display = "block";
   } else {
@@ -267,67 +269,74 @@ form.addEventListener("submit", (e) => {
   }
 
   // CC Inputs
+  // improve the error messages. check out what other websites do
+  const ccDiv = document.querySelector(".col-6");
   const creditCardValidator = () => {
     const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
+    let showError = ccErrorMessage(
+      "span",
+      "textContent",
+      "ERROR: 13-16 digits required"
+    );
     if (!regex.test(cardNum.value)) {
       cardNum.style.borderColor = "red";
+      showError.style.display = "block";
       return false;
     } else {
       cardNum.style.borderColor = "white";
+      showError.remove();
       return true;
     }
   };
 
   const zipCodeValidator = () => {
     const regex = /^\d{5}$/;
+    const showError = zipErrorMessage(
+      "span",
+      "textContent",
+      "ERROR: 5 digits required"
+    );
     if (!regex.test(zip.value)) {
       zip.style.borderColor = "red";
+      showError.style.display = "block";
       return false;
     } else {
       zip.style.borderColor = "white";
+      showError.style.display = "none";
       return true;
     }
   };
 
   const cvvValidator = () => {
     const regex = /^\d{3}$/;
-    if (!regex.test(cvv.value)) {
-      cvv.style.borderColor = "red";
-      return false;
-    } else {
-      cvv.style.borderColor = "white";
-      return true;
-    }
-  };
-
-  if (!creditCardValidator()) {
-    const showError = ccErrorMessage(
-      "span",
-      "textContent",
-      "ERROR: 13-16 digits required"
-    );
-    // how do I set these messages to display only once?
-    showError.style.display = "block";
-    e.preventDefault();
-  }
-
-  if (!zipCodeValidator()) {
-    const showError = zipErrorMessage(
-      "span",
-      "textContent",
-      "ERROR: 5 digits required"
-    );
-    showError.style.display = "block";
-    e.preventDefault();
-  }
-
-  if (!cvvValidator()) {
     const showError = cvvErrorMessage(
       "span",
       "textContent",
       "ERROR: 3 digits required"
     );
-    showError.style.display = "block";
-    e.preventDefault();
+    if (!regex.test(cvv.value)) {
+      cvv.style.borderColor = "red";
+      showError.style.display = "block";
+      return false;
+    } else {
+      cvv.style.borderColor = "white";
+      showError.style.display = "none";
+      return true;
+    }
+  };
+
+  const paymentType = document.querySelector("#payment").value;
+  if (paymentType === "credit card") {
+    if (!creditCardValidator()) {
+      e.preventDefault();
+    }
+
+    if (!zipCodeValidator()) {
+      e.preventDefault();
+    }
+
+    if (!cvvValidator()) {
+      e.preventDefault();
+    }
   }
 });
