@@ -270,7 +270,6 @@ form.addEventListener("submit", (e) => {
 
   // CC Inputs
   // improve the error messages. check out what other websites do
-  const ccDiv = document.querySelector(".col-6");
   const creditCardValidator = () => {
     const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
     let showError = ccErrorMessage(
