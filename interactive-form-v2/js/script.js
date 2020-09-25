@@ -2,6 +2,13 @@ document.querySelector("#name").focus();
 
 const form = document.querySelector("form");
 
+// Helpful function for creating elements as needed
+const createElement = (elementName, property, value) => {
+  const element = document.createElement(elementName);
+  element[property] = value;
+  return element;
+};
+
 // Name and Email inputs
 const nameInput = document.querySelector("#name");
 const email = document.querySelector("#mail");
@@ -13,6 +20,12 @@ const jobTitleInput = document.querySelector("#other-title");
 // T Shirt selection
 const designElement = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
+// Create the 'select a T-shirt' node & message
+const selectShirt = createElement(
+  "option",
+  "innerHTML",
+  "Please select a T-shirt theme"
+);
 
 // Activities selector
 const checkboxes = document.querySelectorAll(".activities input");
@@ -23,25 +36,14 @@ const payment = document.querySelector("#payment");
 // Credit card form selector
 const creditCardForm = document.querySelector("#credit-card");
 
-// Helpful function for creating elements as needed
-const createElement = (elementName, property, value) => {
-  const element = document.createElement(elementName);
-  element[property] = value;
-  return element;
-};
-
 // Default settings when the document loads
 document.addEventListener("DOMContentLoaded", () => {
   // Hide the "other" job title option
   otherTitleLabel.style.display = "none";
   jobTitleInput.style.display = "none";
 
-  // Create the 'select a T-shirt' node & message
-  const selectShirt = createElement(
-    "option",
-    "innerHTML",
-    "Please select a T-shirt theme"
-  );
+  // Hide T shirt color choices when page loads
+  colorSelection.style.display = "none";
 
   // Set value, "selected" option & insert the new node as the first child of the <select> element
   selectShirt.value = "selectshirt";
@@ -90,8 +92,9 @@ for (let i = 0; i < jobTitles.length; i++) {
 // SELECTING T-SHIRT //
 designElement.addEventListener("change", (e) => {
   const shirtColors = colorSelection.children;
-  const themeChoices = e.target;
-  if (themeChoices.value == "heart js") {
+  const themeChoices = e.target.value;
+  if (themeChoices == "heart js") {
+    colorSelection.style.display = "block";
     for (let i = 0; i < shirtColors.length; i++) {
       if (shirtColors[i].text.includes("(JS Puns")) {
         shirtColors[i].hidden = true;
@@ -100,7 +103,8 @@ designElement.addEventListener("change", (e) => {
       }
     }
   }
-  if (themeChoices.value == "js puns") {
+  if (themeChoices == "js puns") {
+    colorSelection.style.display = "block";
     for (let j = 0; j < shirtColors.length; j++) {
       if (shirtColors[j].text.includes("♥")) {
         shirtColors[j].hidden = true;
@@ -110,12 +114,17 @@ designElement.addEventListener("change", (e) => {
     }
   }
   // If user chooses 'Select Theme' after selecting theme previously, refresh the choices
-  if (themeChoices.value == "Select Theme") {
+  if (themeChoices == "Select Theme") {
+    colorSelection.style.display = "none";
     for (let k = 0; k < shirtColors.length; k++) {
       shirtColors[k].hidden = false;
     }
   }
 });
+
+// Changing T Shirt Selections
+const jsPuns = designElement.children[1];
+jsPuns.addEventListener("click", (e) => {});
 
 // SELECTING A WORKSHOP //
 
