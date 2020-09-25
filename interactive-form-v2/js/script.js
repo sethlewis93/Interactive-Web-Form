@@ -7,7 +7,7 @@ const nameInput = document.querySelector("#name");
 const email = document.querySelector("#mail");
 
 // Job selectors: used for opening new 'Your Job Role' field
-const jobTitleLabel = document.getElementsByTagName("label")[2];
+const otherTitleLabel = document.getElementsByTagName("label")[2];
 const jobTitleInput = document.querySelector("#other-title");
 
 // T Shirt selection
@@ -33,7 +33,7 @@ const createElement = (elementName, property, value) => {
 // Default settings when the document loads
 document.addEventListener("DOMContentLoaded", () => {
   // Hide the "other" job title option
-  jobTitleLabel.style.display = "none";
+  otherTitleLabel.style.display = "none";
   jobTitleInput.style.display = "none";
 
   // Create the 'select a T-shirt' node & message
@@ -68,23 +68,24 @@ document.addEventListener("DOMContentLoaded", () => {
 //SELECTING JOB TITLE //
 
 // When user selects 'other' job title - show the input & label
-const jobTitles = document.querySelector("#title");
-const otherJobTitle = jobTitles.lastElementChild;
+const jobTitles = document.querySelector("#title").children;
 
-jobTitles.addEventListener("click", (e) => {
-  if (e.target === otherJobTitle) {
-    jobTitleLabel.style.display = "block";
-    jobTitleInput.style.display = "block";
-  }
-  if (
-    jobTitleLabel.style.display === "block" &&
-    jobTitleInput.style.display === "block" &&
-    e.target !== otherJobTitle
-  ) {
-    jobTitleLabel.style.display = "none";
-    jobTitleInput.style.display = "none";
-  }
-});
+for (let i = 0; i < jobTitles.length; i++) {
+  jobTitles[i].addEventListener("click", (e) => {
+    if (e.target.value === "other") {
+      otherTitleLabel.style.display = "block";
+      jobTitleInput.style.display = "block";
+    }
+    if (
+      otherTitleLabel.style.display === "block" &&
+      jobTitleInput.style.display === "block" &&
+      e.target.value !== "other"
+    ) {
+      otherTitleLabel.style.display = "none";
+      jobTitleInput.style.display = "none";
+    }
+  });
+}
 
 // SELECTING T-SHIRT //
 designElement.addEventListener("change", (e) => {
