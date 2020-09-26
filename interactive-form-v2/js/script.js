@@ -70,24 +70,22 @@ document.addEventListener("DOMContentLoaded", () => {
 //SELECTING JOB TITLE //
 
 // When user selects 'other' job title - show the input & label
-const jobTitles = document.querySelector("#title").children;
+const jobTitles = document.querySelector("#title");
 
-for (let i = 0; i < jobTitles.length; i++) {
-  jobTitles[i].addEventListener("click", (e) => {
-    if (e.target.value === "other") {
-      otherTitleLabel.style.display = "block";
-      jobTitleInput.style.display = "block";
-    }
-    if (
-      otherTitleLabel.style.display === "block" &&
-      jobTitleInput.style.display === "block" &&
-      e.target.value !== "other"
-    ) {
-      otherTitleLabel.style.display = "none";
-      jobTitleInput.style.display = "none";
-    }
-  });
-}
+jobTitles.addEventListener("change", (e) => {
+  if (e.target.value === "other") {
+    otherTitleLabel.style.display = "block";
+    jobTitleInput.style.display = "block";
+  }
+  if (
+    otherTitleLabel.style.display === "block" &&
+    jobTitleInput.style.display === "block" &&
+    e.target.value !== "other"
+  ) {
+    otherTitleLabel.style.display = "none";
+    jobTitleInput.style.display = "none";
+  }
+});
 
 // SELECTING T-SHIRT //
 designElement.addEventListener("change", (e) => {
