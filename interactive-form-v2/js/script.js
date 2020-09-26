@@ -14,8 +14,10 @@ const nameInput = document.querySelector("#name");
 const email = document.querySelector("#mail");
 
 // Job selectors: used for opening new 'Your Job Role' field
-const otherTitleLabel = document.getElementsByTagName("label")[2];
+const jobTitles = document.querySelector("#title");
 const jobTitleInput = document.querySelector("#other-title");
+const otherTitleLabel = jobTitleInput.previousElementSibling;
+
 
 // T Shirt selection
 const designElement = document.querySelector("#design");
@@ -38,6 +40,9 @@ const creditCardForm = document.querySelector("#credit-card");
 
 // Default settings when the document loads
 document.addEventListener("DOMContentLoaded", () => {
+  // When page loads, always begin with first job title
+  jobTitles.firstElementChild.selected = true;
+  
   // Hide the "other" job title option
   otherTitleLabel.style.display = "none";
   jobTitleInput.style.display = "none";
@@ -70,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
 //SELECTING JOB TITLE //
 
 // When user selects 'other' job title - show the input & label
-const jobTitles = document.querySelector("#title");
 
 jobTitles.addEventListener("change", (e) => {
   if (e.target.value === "other") {
