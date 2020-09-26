@@ -202,7 +202,6 @@ payment.addEventListener("change", (e) => {
 // FORM VALIDATION
 const nameValidator = () => {
   const usersName = nameInput.value;
-  console.log(usersName);
   if (usersName.length > 0) {
     nameInput.style.borderColor = "white";
     return true;
@@ -295,7 +294,11 @@ form.addEventListener("submit", (e) => {
       return false;
     } else {
       cardNum.style.borderColor = "white";
-      showError.remove();
+      if (regex.test(cardNum.value)) {
+        const cardNumDiv = document.querySelector('.col-6');
+        const hideError = cardNum.previousElementSibling;
+        hideError.textContent = 'Valid entry: thank you!'
+      }
       return true;
     }
   };
