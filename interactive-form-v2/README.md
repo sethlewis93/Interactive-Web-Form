@@ -2,7 +2,7 @@
  Third project for Team Treehouse FSJS Techdegree
 
 ## About 
-Project number three is an example of using JavaScript to validate user input on a webform for whereby the user receives feedback and helpful indicators as they enter information into various fields or select various options within the form.
+Project number three is an example of using JavaScript to validate user input on a web form for whereby the user receives feedback and helpful indicators as they enter information into various fields or select various options within the form.
 
 ## Code
 I executed project three as follows: 
@@ -21,8 +21,8 @@ An eventListener on the "Design" dropdown listens for the user's choice of one o
 
 Depending on the user's design choice the code will then display the corresponding T-shirt colors whose styles match the design chosen. Should the user click "Select Theme" inside of the "Design" dropdown, each T-shirt option will again be displayed. 
 
-### Worskshop
-This group of code encompases both the functionality to tally the cost of the activity/activites chosen and prevents the user from selecting two activites which occur at conflicting times. The code for the activity chosen will (a) be tallied at the bottom of the element and is responsive to additions to or subtractions from the tally and (b) will check against the other activity options. If any selection conflicts with another, the latter activity is disabled. This feature is also fully interactive and responds to the user selectiing or de-selecting the activities. 
+### Workshop
+This group of code encompasses both the functionality to tally the cost of the activity/activities chosen and prevents the user from selecting two activities which occur at conflicting times. The code for the activity chosen will (a) be tallied at the bottom of the element and is responsive to additions to or subtractions from the tally and (b) will check against the other activity options. If any selection conflicts with another, the latter activity is disabled. This feature is also fully interactive and responds to the user selecting or de-selecting the activities. 
 
 ### Payment
 The user has three payment preferences from which to choose. Clicking one will hide/disable the others. If "credit card" is chosen the credit card form is displayed and will accept user input. 
@@ -34,7 +34,7 @@ This section contains the crux of the project requirements. The name and email f
 EXCEEDS: These validators contain functions which return specific information regarding the user error as opposed to a generic error message.
 
 ### Credit Card Validation
-Similar to the form validation above there are three validator functions declared in this section: credit card number, zip code, and cvv code. These validators are preceeded by variables that retrieve their elements from the DOM and by functions which create and append corresponding error functions if needed. 
+Similar to the form validation above there are three validator functions declared in this section: credit card number, zip code, and cvv code. These validators are preceded by variables that retrieve their elements from the DOM and by functions which create and append corresponding error functions if needed. 
 
 EXCEEDS: These validators contain functions which return specific information regarding the user error as opposed to a generic error message.
 
