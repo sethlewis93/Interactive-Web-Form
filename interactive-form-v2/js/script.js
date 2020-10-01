@@ -283,60 +283,67 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
   }
 
-  // CC Inputs
+   // CC Inputs
   // improve the error messages. check out what other websites do
   const creditCardValidator = () => {
     const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
-    let showError = ccErrorMessage(
-      "span",
-      "textContent",
-      "ERROR: 13-16 digits required"
-    );
     if (!regex.test(cardNum.value)) {
+      const showError = ccErrorMessage(
+        "span",
+        "textContent",
+        "ERROR: 13-16 digits required"
+      );
       cardNum.style.borderColor = "red";
       showError.style.display = "block";
       return false;
     } else {
       cardNum.style.borderColor = "white";
-      const cardNumDiv = document.querySelector(".col-6");
-      const hideError = cardNum.previousElementSibling;
-      cardNumDiv.removeChild(hideError);
+      const errorMessage = cardNum.previousElementSibling;
+      if (errorMessage.textContent.includes('ERROR')) {
+        errorMessage.style.display = 'none';
+      }
       return true;
     }
   };
 
   const zipCodeValidator = () => {
     const regex = /^\d{5}$/;
-    const showError = zipErrorMessage(
-      "span",
-      "textContent",
-      "ERROR: 5 digits required"
-    );
     if (!regex.test(zip.value)) {
+      const showError = zipErrorMessage(
+        "span",
+        "textContent",
+        "ERROR: 5 digits required"
+      );
       zip.style.borderColor = "red";
       showError.style.display = "block";
       return false;
     } else {
       zip.style.borderColor = "white";
-      showError.style.display = "none";
+      const errorMessage = zip.previousElementSibling;
+      if (errorMessage.textContent.includes('ERROR')) {
+        errorMessage.style.display = 'none';
+      }
       return true;
     }
   };
 
   const cvvValidator = () => {
     const regex = /^\d{3}$/;
-    const showError = cvvErrorMessage(
-      "span",
-      "textContent",
-      "ERROR: 3 digits required"
-    );
     if (!regex.test(cvv.value)) {
+      const showError = cvvErrorMessage(
+        "span",
+        "textContent",
+        "ERROR: 3 digits required"
+      );
       cvv.style.borderColor = "red";
       showError.style.display = "block";
       return false;
     } else {
       cvv.style.borderColor = "white";
-      showError.style.display = "none";
+      const errorMessage = cvv.previousElementSibling;
+      if (errorMessage.textContent.includes('ERROR')) {
+        errorMessage.style.display = 'none';
+      }
       return true;
     }
   };
