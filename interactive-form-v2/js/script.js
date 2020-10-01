@@ -200,6 +200,7 @@ payment.addEventListener("change", (e) => {
 // FORM VALIDATION
 const nameValidator = () => {
   const usersName = nameInput.value;
+  const regex = /^\D+$/i;
   const nameErrorMessage = (elementName, property, value) => {
     const element = createElement(elementName, property, value);
     const nameLabel = nameInput.parentNode;
@@ -207,15 +208,21 @@ const nameValidator = () => {
     return element;
   };
   if (usersName.length === 0) {
-    const showError = nameErrorMessage('span', 'textContent', 'Enter valid name');
+    const showError = nameErrorMessage('span', 'textContent', 'Please type your name');
     showError.style.display = 'block';
     nameInput.style.borderColor = "red";
     return false;
   } else {
-    nameInput.style.borderColor = "white";
-    const errorMessage = nameInput.previousElementSibling;
-    if (errorMessage.textContent.includes('Enter')) {
-      errorMessage.style.display = 'none';
+    if (!regex.test(usersName)) {
+      const showError = nameErrorMessage('span', 'textContent', 'May not contain numbers');
+      showError.style.display = 'block';
+      nameInput.style.borderColor = "red";
+    } else {
+      nameInput.style.borderColor = "white";
+      const errorMessage = nameInput.previousElementSibling;
+      if (errorMessage.textContent.includes('Please') || errorMessage.textContent.includes('Ma')) {
+        errorMessage.style.display = 'none';
+      }
     }
     return true;
   }
@@ -223,28 +230,32 @@ const nameValidator = () => {
 
 const emailValidator = () => {
   const usersEmail = email.value;
-  // need to write regex for email validation
-  const commercialAt = usersEmail.indexOf("@");
-  const dot = usersEmail.indexOf(".");
+  const regex = /^[^@]+@[^@\.]+\.[a-z]{3}$/i;
   const emailErrorMessage = (elementName, property, value) => {
     const element = createElement(elementName, property, value);
     const mailLabel = email.parentNode;
     mailLabel.insertBefore(element, email);
     return element;
   };
-
-  if (commercialAt > 1 && dot - 1 > commercialAt + 1) {
-    email.style.borderColor = "white";
-    const errorMessage = email.previousElementSibling;
-    if (errorMessage.textContent.includes('Must')) {
-      errorMessage.style.display = 'none';
-    }
-    return true;
-  } else {
-    const showError = emailErrorMessage('span', 'textContent', 'Must be valid email address');
+  const errorMessage = email.previousElementSibling;
+  if (usersEmail.length === 0) {
+    const showError = emailErrorMessage('span', 'textContent', 'Please enter email address');
     showError.style.display = 'block';
     email.style.borderColor = "red";
     return false;
+  } else {
+    if (!regex.test(usersEmail)) {
+      const showError = emailErrorMessage('span', 'textContent', 'Must be valid email format');
+      showError.style.display = 'block';
+      email.style.borderColor = "red";
+      return false;
+    } else {
+      email.style.borderColor = "white";
+      if (errorMessage.textContent.includes('Must') || errorMessage.textContent.includes('Please') ) {
+        errorMessage.style.display = 'none';
+      }
+      return true;
+    }
   }
 };
 
