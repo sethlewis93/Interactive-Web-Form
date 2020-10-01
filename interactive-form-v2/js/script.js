@@ -94,7 +94,6 @@ jobTitles.addEventListener("change", (e) => {
 // SELECTING T-SHIRT //
 designDropdown.addEventListener("change", (e) => {
   const shirtColors = colorSelection.children;
-  console.log(shirtColors);
   const themeChoices = e.target.value;
   if (themeChoices == "heart js") {
     colorSelection.style.display = "block";
@@ -406,7 +405,7 @@ cardNum.addEventListener('input', creditCardValidator);
 zip.addEventListener('input', zipCodeValidator);
 cvv.addEventListener('input', cvvValidator);
 
-
+// SUBMIT OR PREVENT SUBMISSION
 form.addEventListener("submit", (e) => {
   // Input & activities validators
   if (!nameValidator()) {
