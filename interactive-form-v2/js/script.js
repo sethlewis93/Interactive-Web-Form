@@ -18,7 +18,6 @@ const jobTitles = document.querySelector("#title");
 const jobTitleInput = document.querySelector("#other-title");
 const otherTitleLabel = jobTitleInput.previousElementSibling;
 
-
 // T Shirt selection
 const designElement = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
@@ -42,7 +41,7 @@ const creditCardForm = document.querySelector("#credit-card");
 document.addEventListener("DOMContentLoaded", () => {
   // When page loads, always begin with first job title
   jobTitles.firstElementChild.selected = true;
-  
+
   // Hide the "other" job title option
   otherTitleLabel.style.display = "none";
   jobTitleInput.style.display = "none";
@@ -77,14 +76,15 @@ document.addEventListener("DOMContentLoaded", () => {
 // When user selects 'other' job title - show the input & label
 
 jobTitles.addEventListener("change", (e) => {
-  if (e.target.value === "other") {
+  const clicked = e.target.value;
+  if (clicked === "other") {
     otherTitleLabel.style.display = "block";
     jobTitleInput.style.display = "block";
   }
   if (
     otherTitleLabel.style.display === "block" &&
     jobTitleInput.style.display === "block" &&
-    e.target.value !== "other"
+    clicked !== "other"
   ) {
     otherTitleLabel.style.display = "none";
     jobTitleInput.style.display = "none";
@@ -94,6 +94,7 @@ jobTitles.addEventListener("change", (e) => {
 // SELECTING T-SHIRT //
 designElement.addEventListener("change", (e) => {
   const shirtColors = colorSelection.children;
+  console.log(shirtColors);
   const themeChoices = e.target.value;
   if (themeChoices == "heart js") {
     colorSelection.style.display = "block";
@@ -102,6 +103,8 @@ designElement.addEventListener("change", (e) => {
         shirtColors[i].hidden = true;
       } else {
         shirtColors[i].hidden = false;
+        // Refresh color options each time design selection is changed
+        shirtColors[0].selected = true;
       }
     }
   }
@@ -112,6 +115,7 @@ designElement.addEventListener("change", (e) => {
         shirtColors[j].hidden = true;
       } else {
         shirtColors[j].hidden = false;
+        shirtColors[0].selected = true;
       }
     }
   }
@@ -294,11 +298,9 @@ form.addEventListener("submit", (e) => {
       return false;
     } else {
       cardNum.style.borderColor = "white";
-      if (regex.test(cardNum.value)) {
-        const cardNumDiv = document.querySelector('.col-6');
-        const hideError = cardNum.previousElementSibling;
-        hideError.textContent = 'Valid entry: thank you!'
-      }
+      const cardNumDiv = document.querySelector(".col-6");
+      const hideError = cardNum.previousElementSibling;
+      cardNumDiv.removeChild(hideError);
       return true;
     }
   };
