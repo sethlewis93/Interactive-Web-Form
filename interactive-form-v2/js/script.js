@@ -13,13 +13,13 @@ const createElement = (elementName, property, value) => {
 const nameInput = document.querySelector("#name");
 const email = document.querySelector("#mail");
 
-// Job selectors: used for opening new 'Your Job Role' field
+// Job selectors: used for opening optional 'Your Job Role' field
 const jobTitles = document.querySelector("#title");
 const jobTitleInput = document.querySelector("#other-title");
 const otherTitleLabel = jobTitleInput.previousElementSibling;
 
 // T Shirt selection
-const designElement = document.querySelector("#design");
+const designDropdown = document.querySelector("#design");
 const colorSelection = document.querySelector("#color");
 // Create the 'select a T-shirt' node & message
 const selectShirt = createElement(
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   colorSelection.insertBefore(selectShirt, firstColor);
 
   // Set 'Select Theme' as default shirt design choice
-  designElement.firstElementChild.selected = true;
+  designDropdown.firstElementChild.selected = true;
 
   // If there are any boxes checked when page reloads, remove checks
   for (let i = 0; i < checkboxes.length; i++) {
@@ -92,7 +92,7 @@ jobTitles.addEventListener("change", (e) => {
 });
 
 // SELECTING T-SHIRT //
-designElement.addEventListener("change", (e) => {
+designDropdown.addEventListener("change", (e) => {
   const shirtColors = colorSelection.children;
   console.log(shirtColors);
   const themeChoices = e.target.value;
@@ -128,10 +128,6 @@ designElement.addEventListener("change", (e) => {
   }
 });
 
-// Changing T Shirt Selections
-const jsPuns = designElement.children[1];
-jsPuns.addEventListener("click", (e) => {});
-
 // SELECTING A WORKSHOP //
 
 // Create & apend new total cost element
@@ -155,8 +151,7 @@ activities.addEventListener("change", (e) => {
 
   // Diable conflicting activities
   const eventDayTime = clicked.getAttribute("data-day-and-time");
-  // Checkboxes accessed at top of document
-  // Search all checkbox inputs
+  // Search all checkbox inputs (checkboxes accessed at top of document)
   for (let i = 0; i < checkboxes.length; i++) {
     // Store day/time info from checked box
     const boxType = checkboxes[i].getAttribute("data-day-and-time");
@@ -206,12 +201,24 @@ payment.addEventListener("change", (e) => {
 // FORM VALIDATION
 const nameValidator = () => {
   const usersName = nameInput.value;
-  if (usersName.length > 0) {
-    nameInput.style.borderColor = "white";
-    return true;
-  } else {
+  const nameErrorMessage = (elementName, property, value) => {
+    const element = createElement(elementName, property, value);
+    const nameLabel = nameInput.parentNode;
+    nameLabel.insertBefore(element, nameInput);
+    return element;
+  };
+  if (usersName.length === 0) {
+    const showError = nameErrorMessage('span', 'textContent', 'Enter valid name');
+    showError.style.display = 'block';
     nameInput.style.borderColor = "red";
     return false;
+  } else {
+    nameInput.style.borderColor = "white";
+    const errorMessage = nameInput.previousElementSibling;
+    if (errorMessage.textContent.includes('Enter')) {
+      errorMessage.style.display = 'none';
+    }
+    return true;
   }
 };
 
@@ -220,24 +227,43 @@ const emailValidator = () => {
   // need to write regex for email validation
   const commercialAt = usersEmail.indexOf("@");
   const dot = usersEmail.indexOf(".");
+  const emailErrorMessage = (elementName, property, value) => {
+    const element = createElement(elementName, property, value);
+    const mailLabel = email.parentNode;
+    mailLabel.insertBefore(element, email);
+    return element;
+  };
 
   if (commercialAt > 1 && dot - 1 > commercialAt + 1) {
     email.style.borderColor = "white";
+    const errorMessage = email.previousElementSibling;
+    if (errorMessage.textContent.includes('Must')) {
+      errorMessage.style.display = 'none';
+    }
     return true;
   } else {
+    const showError = emailErrorMessage('span', 'textContent', 'Must be valid email address');
+    showError.style.display = 'block';
     email.style.borderColor = "red";
     return false;
   }
 };
 
 const activitiesValidator = () => {
+  const activitiesErrorMessage = (elementName, property, value) => {
+    const element = createElement(elementName, property, value);
+    const register = activities.firstElementChild;
+    activities.replaceChild(element, register);
+    return element;
+  };
+  const errorMessage = activities.firstElementChild;
   for (let i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
+      errorMessage.style.display = 'none';
       return true;
     }
   }
-  activities.style.borderStyle = "solid";
-  activities.style.borderColor = "red";
+  activitiesErrorMessage('legend', 'textContent', 'PLEASE SELECT AT LEAST ONE ACTIVITY');
   return false;
 };
 
@@ -270,6 +296,117 @@ const cvvErrorMessage = (elementName, property, value) => {
   return element;
 };
 
+// CC Inputs
+const creditCardValidator = () => {
+  const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
+  const errorMessage = cardNum.previousElementSibling;
+  if (cardNum.value.length === 0) {
+    const showError = ccErrorMessage(
+      "span",
+      "textContent",
+      "Please enter a credit card number"
+    );
+    cardNum.style.borderColor = "red";
+    showError.style.display = "block";
+    return false;
+  } else {
+    if (!regex.test(cardNum.value)) {
+      const showError = ccErrorMessage(
+        "span",
+        "textContent",
+        "13-16 digits required"
+      );
+      cardNum.style.borderColor = "red";
+      showError.style.display = "block";
+      if (errorMessage.textContent.includes('Please')) {
+        errorMessage.style.display = 'none';
+      }
+      return false;
+    } else {
+      cardNum.style.borderColor = "white";
+      if (errorMessage.textContent.includes('digits') || errorMessage.textContent.includes('Please')) {
+        errorMessage.style.display = 'none';
+      }
+      return true;
+    }
+  }
+  
+};
+
+const zipCodeValidator = () => {
+  const regex = /^\d{5}$/;
+  const errorMessage = zip.previousElementSibling;
+  if (zip.value.length === 0) {
+    const showError = zipErrorMessage(
+      "span",
+      "textContent",
+      "Please enter zip code"
+    );
+    zip.style.borderColor = "red";
+    showError.style.display = "block";
+  } else {
+    if (!regex.test(zip.value)) {
+      const showError = zipErrorMessage(
+        "span",
+        "textContent",
+        "5 digits required"
+      );
+      if (errorMessage.textContent.includes('Please')) {
+        errorMessage.style.display = 'none';
+      }
+      zip.style.borderColor = "red";
+      showError.style.display = "block";
+      return false;
+    } else {
+      zip.style.borderColor = "white";
+      if (errorMessage.textContent.includes('digits') || errorMessage.textContent.includes('Please')) {
+        errorMessage.style.display = 'none';
+      }
+      return true;
+    }
+  }
+};
+
+const cvvValidator = () => {
+  const regex = /^\d{3}$/;
+  const errorMessage = cvv.previousElementSibling;
+  if (cvv.value.length === 0) {
+    const showError = cvvErrorMessage(
+      "span",
+      "textContent",
+      "Please enter cvv code"
+    );
+    cvv.style.borderColor = "red";
+    showError.style.display = "block";
+    return false;
+  } else {
+    if (!regex.test(cvv.value)) {
+      const showError = cvvErrorMessage(
+        "span",
+        "textContent",
+        "3 digits required"
+      );
+      if (errorMessage.textContent.includes('Please')) {
+        errorMessage.style.display = 'none';
+      }
+      cvv.style.borderColor = "red";
+      showError.style.display = "block";
+      return false;
+    } else {
+      cvv.style.borderColor = "white";
+      if (errorMessage.textContent.includes('digits') || errorMessage.textContent.includes('Please')) {
+        errorMessage.style.display = 'none';
+      }
+      return true;
+    }
+  }
+};
+
+cardNum.addEventListener('input', creditCardValidator);
+zip.addEventListener('input', zipCodeValidator);
+cvv.addEventListener('input', cvvValidator);
+
+
 form.addEventListener("submit", (e) => {
   // Input & activities validators
   if (!nameValidator()) {
@@ -282,71 +419,6 @@ form.addEventListener("submit", (e) => {
   if (!activitiesValidator()) {
     e.preventDefault();
   }
-
-   // CC Inputs
-  // improve the error messages. check out what other websites do
-  const creditCardValidator = () => {
-    const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
-    if (!regex.test(cardNum.value)) {
-      const showError = ccErrorMessage(
-        "span",
-        "textContent",
-        "ERROR: 13-16 digits required"
-      );
-      cardNum.style.borderColor = "red";
-      showError.style.display = "block";
-      return false;
-    } else {
-      cardNum.style.borderColor = "white";
-      const errorMessage = cardNum.previousElementSibling;
-      if (errorMessage.textContent.includes('ERROR')) {
-        errorMessage.style.display = 'none';
-      }
-      return true;
-    }
-  };
-
-  const zipCodeValidator = () => {
-    const regex = /^\d{5}$/;
-    if (!regex.test(zip.value)) {
-      const showError = zipErrorMessage(
-        "span",
-        "textContent",
-        "ERROR: 5 digits required"
-      );
-      zip.style.borderColor = "red";
-      showError.style.display = "block";
-      return false;
-    } else {
-      zip.style.borderColor = "white";
-      const errorMessage = zip.previousElementSibling;
-      if (errorMessage.textContent.includes('ERROR')) {
-        errorMessage.style.display = 'none';
-      }
-      return true;
-    }
-  };
-
-  const cvvValidator = () => {
-    const regex = /^\d{3}$/;
-    if (!regex.test(cvv.value)) {
-      const showError = cvvErrorMessage(
-        "span",
-        "textContent",
-        "ERROR: 3 digits required"
-      );
-      cvv.style.borderColor = "red";
-      showError.style.display = "block";
-      return false;
-    } else {
-      cvv.style.borderColor = "white";
-      const errorMessage = cvv.previousElementSibling;
-      if (errorMessage.textContent.includes('ERROR')) {
-        errorMessage.style.display = 'none';
-      }
-      return true;
-    }
-  };
 
   const paymentType = document.querySelector("#payment").value;
   if (paymentType === "credit card") {
