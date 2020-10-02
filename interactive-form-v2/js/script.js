@@ -1,6 +1,5 @@
 document.querySelector("#name").focus();
 
-
 const form = document.querySelector("form");
 
 // Helpful function for creating elements as needed
@@ -191,12 +190,19 @@ payment.addEventListener("change", (e) => {
 const nameValidator = () => {
   const usersName = nameInput.value;
   const regex = /^\D+$/i;
+  const errorMessage = nameInput.previousElementSibling;
   const nameErrorMessage = (elementName, property, value) => {
     const element = createElement(elementName, property, value);
     const nameLabel = nameInput.parentNode;
     nameLabel.insertBefore(element, nameInput);
     return element;
   };
+  if (
+    errorMessage.textContent.includes("numbers") ||
+    errorMessage.textContent.includes("Please")
+  ) {
+    errorMessage.remove();
+  }
   if (usersName.length === 0) {
     const showError = nameErrorMessage(
       "span",
@@ -217,28 +223,27 @@ const nameValidator = () => {
       nameInput.style.borderColor = "red";
     } else {
       nameInput.style.borderColor = "white";
-      const errorMessage = nameInput.previousElementSibling;
-      if (
-        errorMessage.textContent.includes("Please") ||
-        errorMessage.textContent.includes("May")
-      ) {
-        errorMessage.style.display = "none";
-      }
+      return true;
     }
-    return true;
   }
 };
 
 const emailValidator = () => {
   const usersEmail = email.value;
   const regex = /^[^@]+@[^@\.]+\.[a-z]{3}$/i;
+  const errorMessage = email.previousElementSibling;
   const emailErrorMessage = (elementName, property, value) => {
     const element = createElement(elementName, property, value);
     const mailLabel = email.parentNode;
     mailLabel.insertBefore(element, email);
     return element;
   };
-  const errorMessage = email.previousElementSibling;
+  if (
+    errorMessage.textContent.includes("format") ||
+    errorMessage.textContent.includes("Please")
+  ) {
+    errorMessage.remove();
+  }
   if (usersEmail.length === 0) {
     const showError = emailErrorMessage(
       "span",
@@ -260,12 +265,6 @@ const emailValidator = () => {
       return false;
     } else {
       email.style.borderColor = "white";
-      if (
-        errorMessage.textContent.includes("Must") ||
-        errorMessage.textContent.includes("Please")
-      ) {
-        errorMessage.style.display = "none";
-      }
       return true;
     }
   }
@@ -273,14 +272,17 @@ const emailValidator = () => {
 
 //UNABLE TO CHANGE ERROR MESSAGE RED!
 const activitiesValidator = () => {
+  const errorMessage = activities.firstElementChild;
   const activitiesErrorMessage = (elementName, property, value) => {
     const element = createElement(elementName, property, value);
     const register = activities.firstElementChild;
     activities.insertBefore(element, register);
-    element.style.backgroundColor = 'red'
+    element.style.backgroundColor = "red";
     return element;
   };
-  const errorMessage = activities.firstElementChild;
+  if (errorMessage) {
+    errorMessage.remove();
+  }
   for (let i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
       errorMessage.style.display = "none";
@@ -301,8 +303,8 @@ const activitiesValidator = () => {
 const cardNum = document.querySelector("#cc-num");
 const createCCErrorText = (elementName, property, value) => {
   const element = createElement(elementName, property, value);
-  const cardLabel = cardNum.parentNode;
-  cardLabel.insertBefore(element, cardNum);
+  const cardDiv = cardNum.parentNode;
+  cardDiv.insertBefore(element, cardNum);
   return element;
 };
 
@@ -328,6 +330,12 @@ const createCVVErrorText = (elementName, property, value) => {
 const creditCardValidator = () => {
   const regex = /^(\d{13,16}|\d{3,4}[-]\d{3,4}[-]\d{3,4}[-]\d{3,4})$/;
   const errorMessage = cardNum.previousElementSibling;
+  if (
+    errorMessage.textContent.includes("digits") ||
+    errorMessage.textContent.includes("Please")
+  ) {
+    errorMessage.remove();
+  }
   if (cardNum.value.length === 0) {
     const showError = createCCErrorText(
       "span",
@@ -337,35 +345,33 @@ const creditCardValidator = () => {
     cardNum.style.borderColor = "red";
     showError.style.display = "block";
     return false;
-  } else {
-    if (!regex.test(cardNum.value)) {
-      const showError = createCCErrorText(
-        "span",
-        "textContent",
-        "13-16 digits required"
-      );
-      cardNum.style.borderColor = "red";
-      showError.style.display = "block";
-      if (errorMessage.textContent.includes("Please")) {
-        errorMessage.style.display = "none";
-      }
-      return false;
-    } else {
-      cardNum.style.borderColor = "white";
-      if (
-        errorMessage.textContent.includes("digits") ||
-        errorMessage.textContent.includes("Please")
-      ) {
-        const column = document.querySelector('.col-6');
-        column.removeC      }
-      return true;
+  } else if (!regex.test(cardNum.value)) {
+    const showError = createCCErrorText(
+      "span",
+      "textContent",
+      "Card number must be 13-16 digits"
+    );
+    cardNum.style.borderColor = "red";
+    showError.style.display = "block";
+    if (errorMessage.textContent.includes("Please")) {
+      errorMessage.style.display = "none";
     }
+    return false;
+  } else {
+    cardNum.style.borderColor = "white";
+    return true;
   }
 };
 
 const zipCodeValidator = () => {
   const regex = /^\d{5}$/;
   const errorMessage = zip.previousElementSibling;
+  if (
+    errorMessage.textContent.includes("digits") ||
+    errorMessage.textContent.includes("Please")
+  ) {
+    errorMessage.remove();
+  }
   if (zip.value.length === 0) {
     const showError = createZipErrorText(
       "span",
@@ -379,7 +385,7 @@ const zipCodeValidator = () => {
       const showError = createZipErrorText(
         "span",
         "textContent",
-        "5 digits required"
+        "Zip code must be 5 digits"
       );
       if (errorMessage.textContent.includes("Please")) {
         errorMessage.style.display = "none";
@@ -389,12 +395,6 @@ const zipCodeValidator = () => {
       return false;
     } else {
       zip.style.borderColor = "white";
-      if (
-        errorMessage.textContent.includes("digits") ||
-        errorMessage.textContent.includes("Please")
-      ) {
-        errorMessage.style.display = "none";
-      }
       return true;
     }
   }
@@ -403,6 +403,12 @@ const zipCodeValidator = () => {
 const cvvValidator = () => {
   const regex = /^\d{3}$/;
   const errorMessage = cvv.previousElementSibling;
+  if (
+    errorMessage.textContent.includes("digits") ||
+    errorMessage.textContent.includes("Please")
+  ) {
+    errorMessage.remove();
+  }
   if (cvv.value.length === 0) {
     const showError = createCVVErrorText(
       "span",
@@ -417,7 +423,7 @@ const cvvValidator = () => {
       const showError = createCVVErrorText(
         "span",
         "textContent",
-        "3 digits required"
+        "CVV must be 3 digits"
       );
       if (errorMessage.textContent.includes("Please")) {
         errorMessage.style.display = "none";
@@ -427,26 +433,14 @@ const cvvValidator = () => {
       return false;
     } else {
       cvv.style.borderColor = "white";
-      if (
-        errorMessage.textContent.includes("digits") ||
-        errorMessage.textContent.includes("Please")
-      ) {
-        errorMessage.style.display = "none";
-      }
       return true;
     }
   }
 };
 
-cardNum.addEventListener("input", () => {
-  const ccErrorSpan = cardNum.previousElementSibling;
-  if (ccErrorSpan) {
-    ccErrorSpan.remove();
-    if (!creditCardValidator()) {
-      
-    }
-  } 
-});
+nameInput.addEventListener("input", nameValidator);
+email.addEventListener("input", emailValidator);
+cardNum.addEventListener("input", creditCardValidator);
 zip.addEventListener("input", zipCodeValidator);
 cvv.addEventListener("input", cvvValidator);
 
