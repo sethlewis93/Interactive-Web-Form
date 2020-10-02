@@ -280,7 +280,7 @@ const activitiesValidator = () => {
     element.style.backgroundColor = "red";
     return element;
   };
-  if (errorMessage) {
+  if (errorMessage.textContent.includes("SELECT")) {
     errorMessage.remove();
   }
   for (let i = 0; i < checkboxes.length; i++) {
@@ -438,6 +438,7 @@ const cvvValidator = () => {
   }
 };
 
+// REAL TIME VALIDATION
 nameInput.addEventListener("input", nameValidator);
 email.addEventListener("input", emailValidator);
 cardNum.addEventListener("input", creditCardValidator);
