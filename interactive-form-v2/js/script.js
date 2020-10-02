@@ -285,7 +285,7 @@ const activitiesValidator = () => {
   }
   for (let i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
-      errorMessage.style.display = "none";
+      errorMessage.remove();
       return true;
     }
   }
@@ -441,6 +441,7 @@ const cvvValidator = () => {
 // REAL TIME VALIDATION
 nameInput.addEventListener("input", nameValidator);
 email.addEventListener("input", emailValidator);
+activities.addEventListener("change", activitiesValidator);
 cardNum.addEventListener("input", creditCardValidator);
 zip.addEventListener("input", zipCodeValidator);
 cvv.addEventListener("input", cvvValidator);
