@@ -102,24 +102,20 @@ designDropdown.addEventListener("change", (e) => {
   if (themeChoices == "heart js") {
     colorSelection.style.display = "block";
     for (let i = 0; i < shirtColors.length; i++) {
-      if (shirtColors[i].text.includes("(JS Puns")) {
-        shirtColors[i].hidden = true;
-      } else {
-        shirtColors[i].hidden = false;
-        // Refresh color options each time design selection is changed
-        shirtColors[0].selected = true;
-      }
+      shirtColors[i].text.includes("(JS Puns")
+        ? (shirtColors[i].hidden = true)
+        : (shirtColors[i].hidden = false);
+      // Refresh color options each time design selection is changed
+      shirtColors[0].selected = true;
     }
   }
   if (themeChoices == "js puns") {
     colorSelection.style.display = "block";
     for (let j = 0; j < shirtColors.length; j++) {
-      if (shirtColors[j].text.includes("♥")) {
-        shirtColors[j].hidden = true;
-      } else {
-        shirtColors[j].hidden = false;
-        shirtColors[0].selected = true;
-      }
+      shirtColors[j].text.includes("♥")
+        ? (shirtColors[j].hidden = true)
+        : (shirtColors[j].hidden = false);
+      shirtColors[0].selected = true;
     }
   }
   // If user chooses 'Select Theme' after selecting theme previously, refresh the choices
@@ -145,12 +141,11 @@ activities.addEventListener("change", (e) => {
   let addCost = parseInt(clicked.getAttribute("data-cost"));
 
   // If input element is chcked, add the cost of currently clicked activity or else subtract the cost from total
-  if (clicked.checked) {
-    currentCost += addCost;
-  } else {
-    currentCost -= addCost;
-  }
+  clicked.checked ? (currentCost += addCost) : (currentCost -= addCost);
   totalCost.textContent = `Total Cost: $${currentCost}`;
+  currentCost == 0
+    ? (totalCost.style.display = "none")
+    : (totalCost.style.display = "block");
 
   // Diable conflicting activities
   const eventDayTime = clicked.getAttribute("data-day-and-time");
@@ -162,11 +157,9 @@ activities.addEventListener("change", (e) => {
     if PREVIOUSLY CLICKED activity is different than those IN LOOP*/
     if (boxType === eventDayTime && clicked !== checkboxes[i]) {
       // Check if CLICKED activity was checked. If so - disable MATCHING activity
-      if (clicked.checked) {
-        checkboxes[i].disabled = true;
-      } else {
-        checkboxes[i].disabled = false;
-      }
+      clicked.checked
+        ? (checkboxes[i].disabled = true)
+        : (checkboxes[i].disabled = false);
     }
   }
 });
@@ -175,27 +168,22 @@ activities.addEventListener("change", (e) => {
 payment.addEventListener("change", (e) => {
   const clicked = e.target.value;
   /* Showing/hiding payment forms based on user selection
-      NOTE: 'Select Payment Method' already removed from payment options inside DOMCONTENTLOADED Event
-  */
+        NOTE: 'Select Payment Method' already removed from payment options inside DOMCONTENTLOADED Event
+    */
   const creditCard = payment.children[0];
-  if (clicked === creditCard.value) {
-    creditCardForm.style.display = "block";
-  } else {
-    creditCardForm.style.display = "none";
-  }
+  clicked === creditCard.value
+    ? (creditCardForm.style.display = "block")
+    : (creditCardForm.style.display = "none");
+
   const payPal = payment.children[1];
-  if (clicked === payPal.value) {
-    payPalDiv.style.display = "block";
-  } else {
-    payPalDiv.style.display = "none";
-  }
+  clicked === payPal.value
+    ? (payPalDiv.style.display = "block")
+    : (payPalDiv.style.display = "none");
 
   const bitcoin = payment.children[2];
-  if (clicked === bitcoin.value) {
-    bitcoinDiv.style.display = "block";
-  } else {
-    bitcoinDiv.style.display = "none";
-  }
+  clicked === bitcoin.value
+    ? (bitcoinDiv.style.display = "block")
+    : (bitcoinDiv.style.display = "none");
 });
 
 // FORM VALIDATION
