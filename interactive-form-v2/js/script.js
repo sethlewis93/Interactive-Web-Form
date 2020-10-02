@@ -34,8 +34,10 @@ const checkboxes = document.querySelectorAll(".activities input");
 // Payment selector
 const payment = document.querySelector("#payment");
 
-// Credit card form selector
+// Payment methods form selector
 const creditCardForm = document.querySelector("#credit-card");
+const payPalDiv = document.querySelector("#paypal");
+const bitcoinDiv = document.querySelector("#bitcoin");
 
 // Default settings when the document loads
 document.addEventListener("DOMContentLoaded", () => {
@@ -65,10 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Set 'Credit Card' as default payment option & REMOVE 'Select Payment' message
+  // Set 'Credit Card' as default payment option, REMOVE 'Select Payment' message, and hide other payment divs
   payment.children[1].selected = true;
   let paymentMessage = payment.children[0];
   payment.removeChild(paymentMessage);
+  payPalDiv.style.display = "none";
+  bitcoinDiv.style.display = "none";
 });
 
 //SELECTING JOB TITLE //
@@ -179,21 +183,18 @@ payment.addEventListener("change", (e) => {
   } else {
     creditCardForm.style.display = "none";
   }
-
   const payPal = payment.children[1];
-  const payPalForm = document.querySelector("#paypal");
   if (clicked === payPal.value) {
-    payPalForm.style.display = "block";
+    payPalDiv.style.display = "block";
   } else {
-    payPalForm.style.display = "none";
+    payPalDiv.style.display = "none";
   }
 
   const bitcoin = payment.children[2];
-  const bitcoinForm = document.querySelector("#bitcoin");
   if (clicked === bitcoin.value) {
-    bitcoinForm.style.display = "block";
+    bitcoinDiv.style.display = "block";
   } else {
-    bitcoinForm.style.display = "none";
+    bitcoinDiv.style.display = "none";
   }
 });
 
@@ -208,20 +209,31 @@ const nameValidator = () => {
     return element;
   };
   if (usersName.length === 0) {
-    const showError = nameErrorMessage('span', 'textContent', 'Please type your name');
-    showError.style.display = 'block';
+    const showError = nameErrorMessage(
+      "span",
+      "textContent",
+      "Please type your name"
+    );
+    showError.style.display = "block";
     nameInput.style.borderColor = "red";
     return false;
   } else {
     if (!regex.test(usersName)) {
-      const showError = nameErrorMessage('span', 'textContent', 'May not contain numbers');
-      showError.style.display = 'block';
+      const showError = nameErrorMessage(
+        "span",
+        "textContent",
+        "May not contain numbers"
+      );
+      showError.style.display = "block";
       nameInput.style.borderColor = "red";
     } else {
       nameInput.style.borderColor = "white";
       const errorMessage = nameInput.previousElementSibling;
-      if (errorMessage.textContent.includes('Please') || errorMessage.textContent.includes('Ma')) {
-        errorMessage.style.display = 'none';
+      if (
+        errorMessage.textContent.includes("Please") ||
+        errorMessage.textContent.includes("May")
+      ) {
+        errorMessage.style.display = "none";
       }
     }
     return true;
@@ -239,41 +251,57 @@ const emailValidator = () => {
   };
   const errorMessage = email.previousElementSibling;
   if (usersEmail.length === 0) {
-    const showError = emailErrorMessage('span', 'textContent', 'Please enter email address');
-    showError.style.display = 'block';
+    const showError = emailErrorMessage(
+      "span",
+      "textContent",
+      "Please enter email address"
+    );
+    showError.style.display = "block";
     email.style.borderColor = "red";
     return false;
   } else {
     if (!regex.test(usersEmail)) {
-      const showError = emailErrorMessage('span', 'textContent', 'Must be valid email format');
-      showError.style.display = 'block';
+      const showError = emailErrorMessage(
+        "span",
+        "textContent",
+        "Must be valid email format"
+      );
+      showError.style.display = "block";
       email.style.borderColor = "red";
       return false;
     } else {
       email.style.borderColor = "white";
-      if (errorMessage.textContent.includes('Must') || errorMessage.textContent.includes('Please') ) {
-        errorMessage.style.display = 'none';
+      if (
+        errorMessage.textContent.includes("Must") ||
+        errorMessage.textContent.includes("Please")
+      ) {
+        errorMessage.style.display = "none";
       }
       return true;
     }
   }
 };
 
+//UNABLE TO CHANGE ERROR MESSAGE RED!
 const activitiesValidator = () => {
   const activitiesErrorMessage = (elementName, property, value) => {
     const element = createElement(elementName, property, value);
     const register = activities.firstElementChild;
-    activities.replaceChild(element, register);
+    activities.insertBefore(element, register);
     return element;
   };
   const errorMessage = activities.firstElementChild;
   for (let i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
-      errorMessage.style.display = 'none';
+      errorMessage.style.display = "none";
       return true;
     }
   }
-  activitiesErrorMessage('legend', 'textContent', 'PLEASE SELECT AT LEAST ONE ACTIVITY');
+  activitiesErrorMessage(
+    "span",
+    "textContent",
+    "PLEASE SELECT AT LEAST ONE ACTIVITY"
+  );
   return false;
 };
 
@@ -308,7 +336,7 @@ const cvvErrorMessage = (elementName, property, value) => {
 
 // CC Inputs
 const creditCardValidator = () => {
-  const regex = /^\D*\d{13}\D*(\d{1,3})?\D*$/;
+  const regex = /^(\d{13,16}|\d{3,4}[-]\d{3,4}[-]\d{3,4}[-]\d{3,4})$/;
   const errorMessage = cardNum.previousElementSibling;
   if (cardNum.value.length === 0) {
     const showError = ccErrorMessage(
@@ -328,19 +356,21 @@ const creditCardValidator = () => {
       );
       cardNum.style.borderColor = "red";
       showError.style.display = "block";
-      if (errorMessage.textContent.includes('Please')) {
-        errorMessage.style.display = 'none';
+      if (errorMessage.textContent.includes("Please")) {
+        errorMessage.style.display = "none";
       }
       return false;
     } else {
       cardNum.style.borderColor = "white";
-      if (errorMessage.textContent.includes('digits') || errorMessage.textContent.includes('Please')) {
-        errorMessage.style.display = 'none';
+      if (
+        errorMessage.textContent.includes("digits") ||
+        errorMessage.textContent.includes("Please")
+      ) {
+        errorMessage.style.display = "none";
       }
       return true;
     }
   }
-  
 };
 
 const zipCodeValidator = () => {
@@ -361,16 +391,19 @@ const zipCodeValidator = () => {
         "textContent",
         "5 digits required"
       );
-      if (errorMessage.textContent.includes('Please')) {
-        errorMessage.style.display = 'none';
+      if (errorMessage.textContent.includes("Please")) {
+        errorMessage.style.display = "none";
       }
       zip.style.borderColor = "red";
       showError.style.display = "block";
       return false;
     } else {
       zip.style.borderColor = "white";
-      if (errorMessage.textContent.includes('digits') || errorMessage.textContent.includes('Please')) {
-        errorMessage.style.display = 'none';
+      if (
+        errorMessage.textContent.includes("digits") ||
+        errorMessage.textContent.includes("Please")
+      ) {
+        errorMessage.style.display = "none";
       }
       return true;
     }
@@ -396,25 +429,28 @@ const cvvValidator = () => {
         "textContent",
         "3 digits required"
       );
-      if (errorMessage.textContent.includes('Please')) {
-        errorMessage.style.display = 'none';
+      if (errorMessage.textContent.includes("Please")) {
+        errorMessage.style.display = "none";
       }
       cvv.style.borderColor = "red";
       showError.style.display = "block";
       return false;
     } else {
       cvv.style.borderColor = "white";
-      if (errorMessage.textContent.includes('digits') || errorMessage.textContent.includes('Please')) {
-        errorMessage.style.display = 'none';
+      if (
+        errorMessage.textContent.includes("digits") ||
+        errorMessage.textContent.includes("Please")
+      ) {
+        errorMessage.style.display = "none";
       }
       return true;
     }
   }
 };
 
-cardNum.addEventListener('input', creditCardValidator);
-zip.addEventListener('input', zipCodeValidator);
-cvv.addEventListener('input', cvvValidator);
+cardNum.addEventListener("input", creditCardValidator);
+zip.addEventListener("input", zipCodeValidator);
+cvv.addEventListener("input", cvvValidator);
 
 // SUBMIT OR PREVENT SUBMISSION
 form.addEventListener("submit", (e) => {
