@@ -1,5 +1,6 @@
 document.querySelector("#name").focus();
 
+
 const form = document.querySelector("form");
 
 // Helpful function for creating elements as needed
@@ -276,6 +277,7 @@ const activitiesValidator = () => {
     const element = createElement(elementName, property, value);
     const register = activities.firstElementChild;
     activities.insertBefore(element, register);
+    element.style.backgroundColor = 'red'
     return element;
   };
   const errorMessage = activities.firstElementChild;
@@ -354,8 +356,8 @@ const creditCardValidator = () => {
         errorMessage.textContent.includes("digits") ||
         errorMessage.textContent.includes("Please")
       ) {
-        errorMessage.style.display = "none";
-      }
+        const column = document.querySelector('.col-6');
+        column.removeC      }
       return true;
     }
   }
@@ -457,6 +459,9 @@ form.addEventListener("submit", (e) => {
   const paymentType = document.querySelector("#payment").value;
   if (paymentType === "credit card") {
     if (!creditCardValidator()) {
+      const column = document.querySelector('.col-6'); 
+      const errorMessage = column.children[1];
+      column.removeChild(errorMessage);
       e.preventDefault();
     }
 
