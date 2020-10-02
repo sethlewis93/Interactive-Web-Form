@@ -82,3 +82,24 @@ payment.addEventListener("change", (e) => {
     bitcoinDiv.style.display = "none";
   }
 });
+
+function showOrHideTip(show, element) {
+  // show element when show is true, hide when false
+  if (show) {
+    element.style.display = "block";
+  } else {
+    element.style.display = "none";
+  }
+}
+
+function createListener(validator) {
+  return (e) => {
+    const text = e.target.value;
+    const valid = validator(text);
+    const showTip = !valid;
+    const tooltip = e.target.previousElementSibling;
+    showOrHideTip(showTip, tooltip);
+    console.log(tooltip);
+    console.log(showTip);
+  };
+}
