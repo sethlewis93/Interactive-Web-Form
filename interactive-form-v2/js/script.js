@@ -299,7 +299,7 @@ const activitiesValidator = () => {
 
 // Credit card selector & error message
 const cardNum = document.querySelector("#cc-num");
-const ccErrorMessage = (elementName, property, value) => {
+const createCCErrorText = (elementName, property, value) => {
   const element = createElement(elementName, property, value);
   const cardLabel = cardNum.parentNode;
   cardLabel.insertBefore(element, cardNum);
@@ -308,7 +308,7 @@ const ccErrorMessage = (elementName, property, value) => {
 
 // Zip code selector & error message
 const zip = document.querySelector("#zip");
-const zipErrorMessage = (elementName, property, value) => {
+const createZipErrorText = (elementName, property, value) => {
   const element = createElement(elementName, property, value);
   const zipLabel = zip.parentNode;
   zipLabel.insertBefore(element, zip);
@@ -317,7 +317,7 @@ const zipErrorMessage = (elementName, property, value) => {
 
 // Cvv selector & error message
 const cvv = document.querySelector("#cvv");
-const cvvErrorMessage = (elementName, property, value) => {
+const createCVVErrorText = (elementName, property, value) => {
   const element = createElement(elementName, property, value);
   const cvvLabel = cvv.parentNode;
   cvvLabel.insertBefore(element, cvv);
@@ -329,7 +329,7 @@ const creditCardValidator = () => {
   const regex = /^(\d{13,16}|\d{3,4}[-]\d{3,4}[-]\d{3,4}[-]\d{3,4})$/;
   const errorMessage = cardNum.previousElementSibling;
   if (cardNum.value.length === 0) {
-    const showError = ccErrorMessage(
+    const showError = createCCErrorText(
       "span",
       "textContent",
       "Please enter a credit card number"
@@ -339,7 +339,7 @@ const creditCardValidator = () => {
     return false;
   } else {
     if (!regex.test(cardNum.value)) {
-      const showError = ccErrorMessage(
+      const showError = createCCErrorText(
         "span",
         "textContent",
         "13-16 digits required"
@@ -367,7 +367,7 @@ const zipCodeValidator = () => {
   const regex = /^\d{5}$/;
   const errorMessage = zip.previousElementSibling;
   if (zip.value.length === 0) {
-    const showError = zipErrorMessage(
+    const showError = createZipErrorText(
       "span",
       "textContent",
       "Please enter zip code"
@@ -376,7 +376,7 @@ const zipCodeValidator = () => {
     showError.style.display = "block";
   } else {
     if (!regex.test(zip.value)) {
-      const showError = zipErrorMessage(
+      const showError = createZipErrorText(
         "span",
         "textContent",
         "5 digits required"
@@ -404,7 +404,7 @@ const cvvValidator = () => {
   const regex = /^\d{3}$/;
   const errorMessage = cvv.previousElementSibling;
   if (cvv.value.length === 0) {
-    const showError = cvvErrorMessage(
+    const showError = createCVVErrorText(
       "span",
       "textContent",
       "Please enter cvv code"
@@ -414,7 +414,7 @@ const cvvValidator = () => {
     return false;
   } else {
     if (!regex.test(cvv.value)) {
-      const showError = cvvErrorMessage(
+      const showError = createCVVErrorText(
         "span",
         "textContent",
         "3 digits required"
@@ -438,7 +438,15 @@ const cvvValidator = () => {
   }
 };
 
-cardNum.addEventListener("input", creditCardValidator);
+cardNum.addEventListener("input", () => {
+  const ccErrorSpan = cardNum.previousElementSibling;
+  if (ccErrorSpan) {
+    ccErrorSpan.remove();
+    if (!creditCardValidator()) {
+      
+    }
+  } 
+});
 zip.addEventListener("input", zipCodeValidator);
 cvv.addEventListener("input", cvvValidator);
 
@@ -459,9 +467,6 @@ form.addEventListener("submit", (e) => {
   const paymentType = document.querySelector("#payment").value;
   if (paymentType === "credit card") {
     if (!creditCardValidator()) {
-      const column = document.querySelector('.col-6'); 
-      const errorMessage = column.children[1];
-      column.removeChild(errorMessage);
       e.preventDefault();
     }
 
