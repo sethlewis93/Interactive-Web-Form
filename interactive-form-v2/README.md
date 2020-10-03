@@ -46,7 +46,7 @@ Similar to the form validation above there are three validator functions declare
 
 EXCEEDS: These validators contain functions which return specific information regarding the user error as opposed to a generic error message.
 
-EXCEEDS: After these validators the code provides real-time validation error messages.
+EXCEEDS: The eventListeners near the bottom of the page provide real-time validation feedback. 
 
 ### SUBMIT FORM
 
