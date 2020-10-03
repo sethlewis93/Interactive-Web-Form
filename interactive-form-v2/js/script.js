@@ -285,7 +285,6 @@ const activitiesValidator = () => {
   }
   for (let i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i].checked) {
-      errorMessage.remove();
       return true;
     }
   }
