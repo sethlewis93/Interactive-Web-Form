@@ -270,7 +270,7 @@ const emailValidator = () => {
   }
 };
 
-//UNABLE TO CHANGE ERROR MESSAGE RED!
+// ACTIVITIES ERROR MESSAGE
 const activitiesValidator = () => {
   const errorMessage = activities.firstElementChild;
   const activitiesErrorMessage = (elementName, property, value) => {
