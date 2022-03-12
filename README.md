@@ -58,7 +58,11 @@ The eventListeners near the bottom of the page provide real-time validation feed
 
 Finally, a "submit" listener is put on the form element. The callback function checks that each validator described above received valid input and therefore returns "true". If any of these validators returns "false" submission will be declined.
 
-# TO USE
+# Instructions
 1. Download code
 2. Open index.html in your preferred browser. JS is loaded via <scipt> tag.
 3. Enter requested data into form to get a feel for how front-end validation is handled.
+ 
+**OR**
+  
+Click [here](https://sethlewis93.github.io/Interactive-Web-Form/) for a demo.
